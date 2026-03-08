@@ -251,7 +251,7 @@
         .css-envelope.is-open .env-paper { transform: translateY(-60px); transition: transform 0.5s ease-in-out 0.4s; }
 
         /* --- BỔ SUNG ĐỘ TƯƠNG THÍCH CHO ĐIỆN THOẠI (RESPONSIVE) --- */
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .intro-text-2 { font-size: 3.2rem; }
             .intro-text-1 { font-size: 1rem; }
             .intro-image-container { width: 140px; height: 140px; top: 43%; }
@@ -259,12 +259,6 @@
                 transform: translateX(-50%) scale(0.8); 
                 transform-origin: bottom center; 
                 bottom: 2vh; 
-            }
-            .menu-item-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 1.5rem;
             }
         }
         @media (max-height: 700px) {
@@ -358,44 +352,82 @@
 
     <!-- 2. MÀN HÌNH CHÍNH (MAIN MENU) -->
     <div id="main-screen" class="hidden flex-col items-center justify-center relative z-10 w-full h-full p-4">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-8 drop-shadow-lg text-center letter-font tracking-wide">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 md:mb-12 drop-shadow-lg text-center letter-font tracking-wide">
             Không Gian Của Chúng Mình
         </h1>
         
-        <!-- SỬA LẠI KHU VỰC CHỨA CÁC NÚT ĐỂ CANH GIỮA TRÊN MỌI MÀN HÌNH -->
-        <div class="flex flex-wrap justify-center gap-4 md:gap-8 w-full max-w-4xl px-2">
+        <!-- ĐÃ TÁCH LÀM 2 GIAO DIỆN RIÊNG BIỆT ĐỂ CHỐNG LỆCH -->
+
+        <!-- === 1. GIAO DIỆN CHO MÁY TÍNH (DESKTOP) === -->
+        <div class="hidden md:flex flex-row justify-center items-center gap-10 w-full max-w-5xl mx-auto">
             <!-- Nút Trình Phát Nhạc -->
-            <div onclick="openMusicPlayer()" class="menu-item glass-panel w-36 h-36 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
-                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/30 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-white/50 transition-colors">
-                    <i class="fas fa-music text-3xl md:text-4xl text-pink-600 drop-shadow-md"></i>
+            <div onclick="openMusicPlayer()" class="menu-item glass-panel w-48 h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center mb-4 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-music text-4xl text-pink-600 drop-shadow-md"></i>
                 </div>
-                <span class="text-white font-semibold text-base md:text-lg drop-shadow-md">Giai Điệu</span>
+                <span class="text-white font-semibold text-lg drop-shadow-md">Giai Điệu</span>
             </div>
 
             <!-- Nút Bức Thư -->
-            <div onclick="openLetterScene()" class="menu-item glass-panel w-36 h-36 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
-                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/30 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-white/50 transition-colors">
-                    <i class="fas fa-envelope-open-text text-3xl md:text-4xl text-pink-600 drop-shadow-md"></i>
+            <div onclick="openLetterScene()" class="menu-item glass-panel w-48 h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center mb-4 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-envelope-open-text text-4xl text-pink-600 drop-shadow-md"></i>
                 </div>
-                <span class="text-white font-semibold text-base md:text-lg drop-shadow-md">Bức Thư</span>
+                <span class="text-white font-semibold text-lg drop-shadow-md">Bức Thư</span>
             </div>
 
             <!-- Nút Vòng Quay Đi Chơi -->
-            <div onclick="openWheelModal()" class="menu-item glass-panel w-36 h-36 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
-                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/30 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-white/50 transition-colors">
-                    <i class="fas fa-dharmachakra text-3xl md:text-4xl text-pink-600 drop-shadow-md group-hover:animate-spin"></i>
+            <div onclick="openWheelModal()" class="menu-item glass-panel w-48 h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center mb-4 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-dharmachakra text-4xl text-pink-600 drop-shadow-md group-hover:animate-spin"></i>
                 </div>
-                <span class="text-white font-semibold text-base md:text-lg drop-shadow-md">Đi Chơi</span>
+                <span class="text-white font-semibold text-lg drop-shadow-md">Đi Chơi</span>
             </div>
 
             <!-- Nút Cào Thưởng (Mới) -->
-            <div onclick="openScratchModal()" class="menu-item glass-panel w-36 h-36 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
-                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/30 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-white/50 transition-colors">
-                    <i class="fas fa-gift text-3xl md:text-4xl text-pink-600 drop-shadow-md group-hover:animate-bounce"></i>
+            <div onclick="openScratchModal()" class="menu-item glass-panel w-48 h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center mb-4 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-gift text-4xl text-pink-600 drop-shadow-md group-hover:animate-bounce"></i>
                 </div>
-                <span class="text-white font-semibold text-base md:text-lg drop-shadow-md">Quà Tặng</span>
+                <span class="text-white font-semibold text-lg drop-shadow-md">Quà Tặng</span>
             </div>
         </div>
+
+        <!-- === 2. GIAO DIỆN CHO ĐIỆN THOẠI (MOBILE) === -->
+        <div class="grid grid-cols-2 md:hidden gap-4 w-full max-w-[360px] mx-auto px-2 justify-items-center">
+            <!-- Nút Trình Phát Nhạc -->
+            <div onclick="openMusicPlayer()" class="menu-item glass-panel w-full aspect-square rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-full bg-white/30 flex items-center justify-center mb-3 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-music text-2xl text-pink-600 drop-shadow-md"></i>
+                </div>
+                <span class="text-white font-semibold text-base drop-shadow-md">Giai Điệu</span>
+            </div>
+
+            <!-- Nút Bức Thư -->
+            <div onclick="openLetterScene()" class="menu-item glass-panel w-full aspect-square rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-full bg-white/30 flex items-center justify-center mb-3 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-envelope-open-text text-2xl text-pink-600 drop-shadow-md"></i>
+                </div>
+                <span class="text-white font-semibold text-base drop-shadow-md">Bức Thư</span>
+            </div>
+
+            <!-- Nút Vòng Quay Đi Chơi -->
+            <div onclick="openWheelModal()" class="menu-item glass-panel w-full aspect-square rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-full bg-white/30 flex items-center justify-center mb-3 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-dharmachakra text-2xl text-pink-600 drop-shadow-md group-hover:animate-spin"></i>
+                </div>
+                <span class="text-white font-semibold text-base drop-shadow-md">Đi Chơi</span>
+            </div>
+
+            <!-- Nút Cào Thưởng (Mới) -->
+            <div onclick="openScratchModal()" class="menu-item glass-panel w-full aspect-square rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-full bg-white/30 flex items-center justify-center mb-3 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-gift text-2xl text-pink-600 drop-shadow-md group-hover:animate-bounce"></i>
+                </div>
+                <span class="text-white font-semibold text-base drop-shadow-md">Quà Tặng</span>
+            </div>
+        </div>
+
     </div>
 
     <!-- 3. GIAO DIỆN TRÌNH PHÁT NHẠC -->
