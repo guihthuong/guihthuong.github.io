@@ -281,8 +281,8 @@
 </head>
 <body class="h-screen w-screen flex items-center justify-center relative">
 
-    <!-- 0. MÀN HÌNH GIỚI THIỆU (INTRO) - Nhấn vào để lách luật chặn tự động phát nhạc -->
-    <div id="intro-screen" class="cursor-pointer" onclick="startBgMusic()">
+    <!-- 0. MÀN HÌNH GIỚI THIỆU (INTRO) -->
+    <div id="intro-screen">
         <!-- Chữ cố định phía trên -->
         <div class="absolute top-[12%] w-full flex flex-col items-center z-20">
             <h2 class="intro-text-1">Happy Women's Day</h2>
@@ -334,7 +334,7 @@
         </div>
         <p id="error-msg" class="text-red-500 text-sm mb-4 hidden font-medium bg-white/70 rounded-full py-1">Sai mật khẩu rồi nè!</p>
 
-        <!-- Bàn phím số (Đã tối ưu cho mobile) -->
+        <!-- Bàn phím số -->
         <div class="grid grid-cols-3 gap-3 md:gap-4 mb-2">
             <button onclick="pressPin(1)" class="w-14 h-14 md:w-16 md:h-16 mx-auto rounded-full bg-white/20 hover:bg-white/40 active:bg-white/60 text-white text-xl md:text-2xl font-semibold transition-all shadow-sm">1</button>
             <button onclick="pressPin(2)" class="w-14 h-14 md:w-16 md:h-16 mx-auto rounded-full bg-white/20 hover:bg-white/40 active:bg-white/60 text-white text-xl md:text-2xl font-semibold transition-all shadow-sm">2</button>
@@ -362,8 +362,8 @@
             Không Gian Của Chúng Mình
         </h1>
         
-        <!-- Khu vực chứa các nút - Đã chỉnh grid để hiển thị 4 nút cực đẹp -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 w-full max-w-4xl px-2 justify-items-center">
+        <!-- SỬA LẠI KHU VỰC CHỨA CÁC NÚT ĐỂ CANH GIỮA TRÊN MỌI MÀN HÌNH -->
+        <div class="flex flex-wrap justify-center gap-4 md:gap-8 w-full max-w-4xl px-2">
             <!-- Nút Trình Phát Nhạc -->
             <div onclick="openMusicPlayer()" class="menu-item glass-panel w-36 h-36 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
                 <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/30 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-white/50 transition-colors">
