@@ -259,6 +259,12 @@
                 transform-origin: bottom center; 
                 bottom: 2vh; 
             }
+            .menu-item-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+            }
         }
         @media (max-height: 700px) {
             .beautiful-bouquet { 
@@ -350,12 +356,12 @@
     </div>
 
     <!-- 2. MÀN HÌNH CHÍNH (MAIN MENU) -->
-    <div id="main-screen" class="hidden flex-col items-center justify-center relative z-10 w-full h-full">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-12 drop-shadow-lg text-center letter-font tracking-wide">
+    <div id="main-screen" class="hidden flex-col items-center justify-center relative z-10 w-full h-full p-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-8 drop-shadow-lg text-center letter-font tracking-wide">
             Không Gian Của Chúng Mình
         </h1>
         
-        <div class="flex flex-col md:flex-row flex-wrap justify-center gap-6 md:gap-12 px-4">
+        <div class="menu-item-container flex flex-col md:flex-row flex-wrap justify-center gap-6 md:gap-12 w-full max-w-4xl items-center">
             <!-- Nút Trình Phát Nhạc -->
             <div onclick="openMusicPlayer()" class="menu-item glass-panel w-40 h-40 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
                 <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center mb-4 group-hover:bg-white/50 transition-colors">
@@ -369,7 +375,7 @@
                 <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center mb-4 group-hover:bg-white/50 transition-colors">
                     <i class="fas fa-envelope-open-text text-4xl text-pink-600 drop-shadow-md"></i>
                 </div>
-                <span class="text-white font-semibold text-lg drop-shadow-md">Thư Tình</span>
+                <span class="text-white font-semibold text-lg drop-shadow-md">Bức Thư</span>
             </div>
 
             <!-- Nút Vòng Quay Hẹn Hò -->
@@ -772,9 +778,9 @@
 
         const letterLines = [
             { text: "Gửi Hồng Thương,", tag: "h2", classes: "text-4xl text-pink-500 mb-6 text-center" },
-            { text: "Tạm thời chỗ này tớ viết mấy dòng thế này đã nhé.", tag: "p", classes: "mb-4" },
-            { text: "Giao diện này tớ làm riêng cho Thương đấy, mong là Thương sẽ thích không gian nhỏ màu hồng này. Có thể nghe nhạc, ngắm những trái tim rơi và đọc bức thư này.", tag: "p", classes: "mb-4" },
-            { text: "Sau này tớ sẽ sửa lại nội dung thật hay và lãng mạn hơn. Nhớ đợi nhé!", tag: "p", classes: "mb-8" },
+            { text: "Chúc mừng ngày 8/3 nhé! Tớ vẫn luôn âm thầm quan sát và thực sự khâm phục cách cậu nỗ lực cho những mục tiêu của mình. Ở cậu luôn toát ra một nguồn năng lượng khiến những người xung quanh, trong đó có tớ, cảm thấy rất dễ chịu và có thêm động lực.", tag: "p", classes: "mb-4" },
+            { text: "Ngày hôm nay, tớ không chỉ mong cậu nhận được nhiều hoa và quà, mà còn mong cậu hãy tạm gác lại những lo toan, cho phép mình được nghỉ ngơi và tận hưởng sự chiều chuộng mà cậu xứng đáng có được. Cảm ơn cậu vì đã xuất hiện và làm cho thế giới của tớ trở nên thú vị hơn một chút. Cứ tự tin là chính mình thôi nhé, vì phiên bản ấy là phiên bản tuyệt vời nhất rồi!", tag: "p", classes: "mb-4" },
+            { text: "Giao diện này tớ làm riêng cho Thương đấy, mong là Thương sẽ thích không gian nhỏ màu hồng này. Có thể nghe nhạc, ngắm những trái tim rơi và đọc bức thư này.", tag: "p", classes: "mb-8" },
             { text: "Người thương của Thương ❤️", tag: "p", classes: "text-right text-pink-600 font-bold mt-12" }
         ];
 
