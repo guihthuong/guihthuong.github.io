@@ -285,7 +285,7 @@
         <!-- Khung ảnh ở giữa -->
         <div class="intro-image-container">
             <!-- THAY LINK ẢNH CỦA BẠN VÀO THUỘC TÍNH src BÊN DƯỚI -->
-            <img src="logo.jpg" alt="Hồng Thương">
+            <img src="logo.png" alt="Hồng Thương">
         </div>
 
         <!-- Bó hoa MỚI (Khổng lồ, 9 bông) -->
@@ -391,7 +391,7 @@
             
             <div class="flex justify-center mt-4 mb-8">
                 <div class="relative w-48 h-48 rounded-full shadow-2xl border-4 border-white/20 overflow-hidden">
-                    <img id="album-art" src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Album Art" class="w-full h-full object-cover spin-slow spin-paused">
+                    <img id="album-art" src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Album Art" class="w-full h-full object-cover spin-slow spin-paused">
                     <div class="absolute inset-0 flex items-center justify-center">
                         <div class="w-12 h-12 bg-pink-200 rounded-full border-4 border-white/50"></div>
                     </div>
@@ -399,24 +399,24 @@
             </div>
 
             <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold text-white drop-shadow-md">Bản Tình Ca</h3>
-                <p class="text-pink-100 text-sm">Chờ một người...</p>
+                <h3 id="song-title" class="text-2xl font-bold text-white drop-shadow-md">Ai Ngoài Anh</h3>
+                <p id="song-artist" class="text-pink-100 text-sm">VSTRA</p>
             </div>
 
             <div class="mb-6 px-2">
                 <input type="range" id="progress-bar" min="0" max="100" value="0" class="w-full" oninput="seekMusic()">
                 <div class="flex justify-between text-xs text-white/80 mt-2 font-medium">
                     <span id="current-time">0:00</span>
-                    <span id="total-time">3:45</span>
+                    <span id="total-time">0:00</span>
                 </div>
             </div>
 
             <div class="flex items-center justify-center gap-6 mb-6">
-                <button class="text-white/80 hover:text-white text-xl transition"><i class="fas fa-step-backward"></i></button>
+                <button onclick="prevSong()" class="text-white/80 hover:text-white text-xl transition"><i class="fas fa-step-backward"></i></button>
                 <button onclick="togglePlay()" class="w-14 h-14 bg-white text-pink-500 rounded-full flex items-center justify-center text-2xl shadow-lg hover:scale-105 transition-transform">
                     <i id="play-icon" class="fas fa-play ml-1"></i>
                 </button>
-                <button class="text-white/80 hover:text-white text-xl transition"><i class="fas fa-step-forward"></i></button>
+                <button onclick="nextSong()" class="text-white/80 hover:text-white text-xl transition"><i class="fas fa-step-forward"></i></button>
             </div>
 
             <div class="flex items-center gap-3 px-4 text-white/80">
@@ -490,6 +490,63 @@
     </div>
 
     <script>
+        // --- NHẠC NỀN CHUNG CỦA WEB ---
+        const bgMusic = new Audio("link_nhac_nen_chung.m4a"); // <-- SỬA LINK NHẠC NỀN TẠI ĐÂY
+        bgMusic.loop = true;
+
+        let bgmFadeInterval;
+        function fadeBgMusic(targetVolume) {
+            clearInterval(bgmFadeInterval);
+            
+            // Nếu muốn mở nhạc và nhạc đang dừng thì play trước
+            if (targetVolume > 0 && bgMusic.paused) {
+                bgMusic.play().catch(e => console.log("Cần chèn link nhạc thật để phát"));
+            }
+            
+            bgmFadeInterval = setInterval(() => {
+                let currentVol = bgMusic.volume;
+                
+                // So sánh và thay đổi âm lượng mượt mà (chênh lệch 0.05)
+                if (Math.abs(currentVol - targetVolume) < 0.05) {
+                    bgMusic.volume = targetVolume;
+                    clearInterval(bgmFadeInterval);
+                    if (targetVolume === 0) bgMusic.pause(); // Tắt hẳn khi vol = 0
+                } else if (currentVol < targetVolume) {
+                    bgMusic.volume = Math.min(currentVol + 0.05, 1);
+                } else {
+                    bgMusic.volume = Math.max(currentVol - 0.05, 0);
+                }
+            }, 100);
+        }
+
+        // --- TỰ ĐỘNG PHÁT NHẠC KHI VÀO WEB ---
+        let hasBgMusicStarted = false;
+        function startBgMusic() {
+            if (hasBgMusicStarted) return;
+            bgMusic.volume = 0;
+            let playPromise = bgMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    hasBgMusicStarted = true;
+                    fadeBgMusic(0.4); // Fade in lên 40%
+                    // Xóa sự kiện sau khi đã phát thành công
+                    document.removeEventListener('click', startBgMusic);
+                    document.removeEventListener('touchstart', startBgMusic);
+                    document.removeEventListener('keydown', startBgMusic);
+                }).catch(error => {
+                    console.log("Trình duyệt chặn tự động phát nhạc. Đang đợi người dùng tương tác...");
+                });
+            }
+        }
+
+        // Cố gắng phát ngay khi load trang
+        window.addEventListener('load', startBgMusic);
+        // Bắt các tương tác đầu tiên (nhấn phím, click, chạm) để bật nhạc nếu trình duyệt chặn autoplay
+        document.addEventListener('click', startBgMusic);
+        document.addEventListener('touchstart', startBgMusic);
+        document.addEventListener('keydown', startBgMusic);
+
         // --- 1. XỬ LÝ ĐĂNG NHẬP ---
         let currentPin = '';
         const correctPin = '0401';
@@ -537,6 +594,7 @@
             if (currentPin === correctPin) {
                 errorMsg.classList.add('hidden');
                 loginScreen.classList.add('fade-out');
+
                 setTimeout(() => {
                     loginScreen.classList.add('hidden');
                     mainScreen.classList.remove('hidden');
@@ -753,43 +811,136 @@
             typeLine();
         }
 
-        // --- NHẠC ---
+        // --- NHẠC TRONG TRÌNH PHÁT (MUSIC PLAYER) ---
+        const playlist = [
+            {
+                title: "Ai Ngoài Anh",
+                artist: "VSTRA",
+                src: "link_nhac_1.m4a", // <-- SỬA LINK m4a TẠI ĐÂY
+                cover: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                title: "KHÔNG BUÔNG",
+                artist: "Hngle ft. Ari",
+                src: "link_nhac_2.m4a", // <-- SỬA LINK m4a TẠI ĐÂY
+                cover: "https://images.unsplash.com/photo-1493225457124-a1a2a5f5f4b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                title: "Từng Ngày Yêu Em",
+                artist: "buitruonglinh",
+                src: "link_nhac_3.m4a", // <-- SỬA LINK m4a TẠI ĐÂY
+                cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                title: "Tình Yêu Giữa Mùa Đông",
+                artist: "Phan Mạnh Quỳnh",
+                src: "link_nhac_4.m4a", // <-- SỬA LINK m4a TẠI ĐÂY
+                cover: "https://images.unsplash.com/photo-1483808161634-29aa1b14210a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                title: "Đắm Chìm",
+                artist: "Trâu Bái Bái / Pank",
+                src: "link_nhac_5.m4a", // <-- SỬA LINK m4a TẠI ĐÂY
+                cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                title: "Nắng Ấm Trong Tim",
+                artist: "Duongg (prod. by Dadeon)",
+                src: "link_nhac_6.m4a", // <-- SỬA LINK m4a TẠI ĐÂY
+                cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                title: "Ai Đưa Em Về",
+                artist: "TIA",
+                src: "link_nhac_7.m4a", // <-- SỬA LINK m4a TẠI ĐÂY
+                cover: "https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+            }
+        ];
+
+        let currentSongIndex = 0;
         let isPlaying = false;
-        let progressInterval;
-        let currentProgress = 0;
-        const totalDuration = 225;
+        const audio = new Audio();
+        audio.volume = 0.7; // Mặc định âm lượng 70%
+
+        function loadSong(index) {
+            const song = playlist[index];
+            audio.src = song.src;
+            document.getElementById('song-title').innerText = song.title;
+            document.getElementById('song-artist').innerText = song.artist;
+            document.getElementById('album-art').src = song.cover;
+        }
 
         function togglePlay() {
             const playIcon = document.getElementById('play-icon');
             const albumArt = document.getElementById('album-art');
-            isPlaying = !isPlaying;
-            if (isPlaying) {
-                playIcon.classList.remove('fa-play'); playIcon.classList.add('fa-pause'); playIcon.classList.remove('ml-1');
+            
+            if (audio.paused) {
+                // Ignore error if dummy src is not valid, just for visual
+                audio.play().catch(e => console.log("Chưa có link m4a thật, nhạc đang chạy mô phỏng giao diện"));
+                isPlaying = true;
+                playIcon.classList.remove('fa-play', 'ml-1'); 
+                playIcon.classList.add('fa-pause');
                 albumArt.classList.remove('spin-paused');
-                progressInterval = setInterval(() => {
-                    currentProgress += 0.5;
-                    if(currentProgress >= totalDuration) { currentProgress = 0; togglePlay(); }
-                    updateProgressBar();
-                }, 500);
+                
+                // Mở nhạc thì tắt nhạc nền mượt mà
+                fadeBgMusic(0); 
             } else {
-                playIcon.classList.remove('fa-pause'); playIcon.classList.add('fa-play'); playIcon.classList.add('ml-1');
+                audio.pause();
+                isPlaying = false;
+                playIcon.classList.remove('fa-pause'); 
+                playIcon.classList.add('fa-play', 'ml-1');
                 albumArt.classList.add('spin-paused');
-                clearInterval(progressInterval);
+                
+                // Tắt nhạc máy phát thì bật nhạc nền lên lại
+                fadeBgMusic(0.4); 
             }
         }
 
-        function updateProgressBar() {
-            const bar = document.getElementById('progress-bar');
-            bar.value = (currentProgress / totalDuration) * 100;
-            const mins = Math.floor(currentProgress / 60);
-            const secs = Math.floor(currentProgress % 60);
-            document.getElementById('current-time').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            loadSong(currentSongIndex);
+            if (isPlaying) audio.play().catch(e => {});
         }
 
-        function seekMusic() {
-            currentProgress = (document.getElementById('progress-bar').value / 100) * totalDuration;
-            updateProgressBar();
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentSongIndex);
+            if (isPlaying) audio.play().catch(e => {});
         }
+
+        // Tự động chuyển bài khi hết
+        audio.addEventListener('ended', nextSong);
+
+        // Cập nhật thanh tiến trình
+        audio.addEventListener('timeupdate', () => {
+            if(isNaN(audio.duration)) return;
+            const bar = document.getElementById('progress-bar');
+            bar.value = (audio.currentTime / audio.duration) * 100;
+            
+            let curMins = Math.floor(audio.currentTime / 60);
+            let curSecs = Math.floor(audio.currentTime % 60);
+            document.getElementById('current-time').innerText = `${curMins}:${curSecs < 10 ? '0' : ''}${curSecs}`;
+
+            let totMins = Math.floor(audio.duration / 60);
+            let totSecs = Math.floor(audio.duration % 60);
+            document.getElementById('total-time').innerText = `${totMins}:${totSecs < 10 ? '0' : ''}${totSecs}`;
+        });
+
+        // Tua nhạc
+        function seekMusic() {
+            const bar = document.getElementById('progress-bar');
+            audio.currentTime = (bar.value / 100) * audio.duration;
+        }
+
+        // Chỉnh âm lượng
+        document.getElementById('volume-bar').addEventListener('input', (e) => {
+            audio.volume = e.target.value / 100;
+        });
+
+        // Khởi tạo bài đầu tiên (nhưng chưa phát)
+        window.addEventListener('load', () => {
+            loadSong(currentSongIndex);
+        });
 
         // --- CANVAS PARTICLES ---
         const canvas = document.getElementById('particle-canvas');
