@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -280,8 +281,8 @@
 </head>
 <body class="h-screen w-screen flex items-center justify-center relative">
 
-    <!-- 0. MÀN HÌNH GIỚI THIỆU (INTRO) -->
-    <div id="intro-screen">
+    <!-- 0. MÀN HÌNH GIỚI THIỆU (INTRO) - Nhấn vào để lách luật chặn tự động phát nhạc -->
+    <div id="intro-screen" class="cursor-pointer" onclick="startBgMusic()">
         <!-- Chữ cố định phía trên -->
         <div class="absolute top-[12%] w-full flex flex-col items-center z-20">
             <h2 class="intro-text-1">Happy Women's Day</h2>
@@ -361,29 +362,38 @@
             Không Gian Của Chúng Mình
         </h1>
         
-        <div class="menu-item-container flex flex-col md:flex-row flex-wrap justify-center gap-6 md:gap-12 w-full max-w-4xl items-center">
+        <!-- Khu vực chứa các nút - Đã chỉnh grid để hiển thị 4 nút cực đẹp -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 w-full max-w-4xl px-2 justify-items-center">
             <!-- Nút Trình Phát Nhạc -->
-            <div onclick="openMusicPlayer()" class="menu-item glass-panel w-40 h-40 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
-                <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center mb-4 group-hover:bg-white/50 transition-colors">
-                    <i class="fas fa-music text-4xl text-pink-600 drop-shadow-md"></i>
+            <div onclick="openMusicPlayer()" class="menu-item glass-panel w-36 h-36 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/30 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-music text-3xl md:text-4xl text-pink-600 drop-shadow-md"></i>
                 </div>
-                <span class="text-white font-semibold text-lg drop-shadow-md">Giai Điệu</span>
+                <span class="text-white font-semibold text-base md:text-lg drop-shadow-md">Giai Điệu</span>
             </div>
 
             <!-- Nút Bức Thư -->
-            <div onclick="openLetterScene()" class="menu-item glass-panel w-40 h-40 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
-                <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center mb-4 group-hover:bg-white/50 transition-colors">
-                    <i class="fas fa-envelope-open-text text-4xl text-pink-600 drop-shadow-md"></i>
+            <div onclick="openLetterScene()" class="menu-item glass-panel w-36 h-36 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/30 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-envelope-open-text text-3xl md:text-4xl text-pink-600 drop-shadow-md"></i>
                 </div>
-                <span class="text-white font-semibold text-lg drop-shadow-md">Bức Thư</span>
+                <span class="text-white font-semibold text-base md:text-lg drop-shadow-md">Bức Thư</span>
             </div>
 
-            <!-- Nút Vòng Quay Hẹn Hò -->
-            <div onclick="openWheelModal()" class="menu-item glass-panel w-40 h-40 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
-                <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center mb-4 group-hover:bg-white/50 transition-colors">
-                    <i class="fas fa-dharmachakra text-4xl text-pink-600 drop-shadow-md group-hover:animate-spin"></i>
+            <!-- Nút Vòng Quay Đi Chơi -->
+            <div onclick="openWheelModal()" class="menu-item glass-panel w-36 h-36 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/30 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-dharmachakra text-3xl md:text-4xl text-pink-600 drop-shadow-md group-hover:animate-spin"></i>
                 </div>
-                <span class="text-white font-semibold text-lg drop-shadow-md">Hẹn Hò</span>
+                <span class="text-white font-semibold text-base md:text-lg drop-shadow-md">Đi Chơi</span>
+            </div>
+
+            <!-- Nút Cào Thưởng (Mới) -->
+            <div onclick="openScratchModal()" class="menu-item glass-panel w-36 h-36 md:w-48 md:h-48 rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group">
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/30 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-white/50 transition-colors">
+                    <i class="fas fa-gift text-3xl md:text-4xl text-pink-600 drop-shadow-md group-hover:animate-bounce"></i>
+                </div>
+                <span class="text-white font-semibold text-base md:text-lg drop-shadow-md">Quà Tặng</span>
             </div>
         </div>
     </div>
@@ -472,7 +482,7 @@
                 <i class="fas fa-times text-2xl"></i>
             </button>
             
-            <h3 class="text-3xl font-bold text-white drop-shadow-md mb-8 mt-2 letter-font">Vòng Quay Hẹn Hò</h3>
+            <h3 class="text-3xl font-bold text-white drop-shadow-md mb-8 mt-2 letter-font">Vòng Quay Đi Chơi</h3>
             
             <div class="relative w-64 h-64 md:w-80 md:h-80 mb-8">
                 <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-20 text-pink-500 drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]">
@@ -495,7 +505,58 @@
         </div>
     </div>
 
+    <!-- 6. GIAO DIỆN CÀO THƯỞNG -->
+    <div id="scratch-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
+        <div class="glass-panel w-11/12 max-w-md rounded-3xl p-6 md:p-8 relative flex flex-col items-center shadow-2xl text-center">
+            <button onclick="closeScratchModal()" class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors z-10">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+
+            <h3 class="text-3xl font-bold text-white drop-shadow-md mb-4 mt-2 letter-font">Món Quà Bí Mật</h3>
+            <p class="text-pink-100 mb-8 text-sm px-2">Hãy cào lớp bạc bên dưới để xem phần thưởng của cậu hôm nay là gì nhé!</p>
+
+            <div class="relative w-64 h-32 md:w-72 md:h-40 rounded-2xl overflow-hidden shadow-[0_0_20px_rgba(255,105,180,0.5)] border-4 border-pink-200 bg-white flex items-center justify-center">
+                
+                <!-- Kết quả (luôn hiện, nhưng bị che bởi canvas bên trên) -->
+                <div id="scratch-result" class="absolute inset-0 flex flex-col items-center justify-center bg-pink-50 p-4 z-0">
+                    <span class="text-pink-600 font-bold text-lg md:text-xl mb-1 heartbeat">🎉 Chúc mừng 🎉</span>
+                    <span class="text-pink-500 font-semibold text-center text-sm md:text-base mt-2">Bạn đã trúng thưởng<br><b class="text-xl md:text-2xl text-pink-600 drop-shadow-sm leading-relaxed">1 Bó Hoa 💐</b></span>
+                </div>
+                
+                <!-- Lớp tráng bạc (Canvas) để cào -->
+                <canvas id="scratch-canvas" class="absolute inset-0 w-full h-full cursor-pointer z-10 touch-none"></canvas>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // --- TÍNH NĂNG BẮN PHÁO HOA ---
+        function fireConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                }));
+                confetti(Object.assign({}, defaults, { particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                }));
+            }, 250);
+        }
+
         // --- NHẠC NỀN CHUNG CỦA WEB ---
         const bgMusic = new Audio("link_nhac_nen_chung.m4a"); // <-- SỬA LINK NHẠC NỀN TẠI ĐÂY
         bgMusic.loop = true;
@@ -504,19 +565,16 @@
         function fadeBgMusic(targetVolume) {
             clearInterval(bgmFadeInterval);
             
-            // Nếu muốn mở nhạc và nhạc đang dừng thì play trước
             if (targetVolume > 0 && bgMusic.paused) {
                 bgMusic.play().catch(e => console.log("Cần chèn link nhạc thật để phát"));
             }
             
             bgmFadeInterval = setInterval(() => {
                 let currentVol = bgMusic.volume;
-                
-                // So sánh và thay đổi âm lượng mượt mà (chênh lệch 0.05)
                 if (Math.abs(currentVol - targetVolume) < 0.05) {
                     bgMusic.volume = targetVolume;
                     clearInterval(bgmFadeInterval);
-                    if (targetVolume === 0) bgMusic.pause(); // Tắt hẳn khi vol = 0
+                    if (targetVolume === 0) bgMusic.pause();
                 } else if (currentVol < targetVolume) {
                     bgMusic.volume = Math.min(currentVol + 0.05, 1);
                 } else {
@@ -535,8 +593,7 @@
             if (playPromise !== undefined) {
                 playPromise.then(_ => {
                     hasBgMusicStarted = true;
-                    fadeBgMusic(0.4); // Fade in lên 40%
-                    // Xóa sự kiện sau khi đã phát thành công
+                    fadeBgMusic(0.4);
                     document.removeEventListener('click', startBgMusic);
                     document.removeEventListener('touchstart', startBgMusic);
                     document.removeEventListener('keydown', startBgMusic);
@@ -546,9 +603,7 @@
             }
         }
 
-        // Cố gắng phát ngay khi load trang
         window.addEventListener('load', startBgMusic);
-        // Bắt các tương tác đầu tiên (nhấn phím, click, chạm) để bật nhạc nếu trình duyệt chặn autoplay
         document.addEventListener('click', startBgMusic);
         document.addEventListener('touchstart', startBgMusic);
         document.addEventListener('keydown', startBgMusic);
@@ -630,7 +685,7 @@
             }
         }
 
-        // --- 2. XỬ LÝ MỞ/ĐÓNG MODAL ---
+        // --- 2. XỬ LÝ MỞ/ĐÓNG MODAL CÁC TÍNH NĂNG ---
         function openMusicPlayer() {
             document.getElementById('music-modal').classList.remove('hidden');
             document.getElementById('music-modal').classList.add('fade-in');
@@ -734,9 +789,130 @@
                 const index = Math.floor((360 - deg) / sliceAngle) % wheelOptions.length;
                 
                 resultText.innerHTML = `Chốt luôn: <span class="font-bold text-pink-300 ml-2 text-2xl uppercase tracking-wider">${wheelOptions[index]}</span> 🎉`;
+                
+                // Bắn pháo hoa ăn mừng
+                fireConfetti();
+                
             }, 4000);
         }
 
+        // --- CÀO THƯỞNG (SCRATCH CARD) ---
+        let scratchCanvas, scratchCtx;
+        let isScratching = false;
+        let isScratchRevealed = false;
+
+        function initScratch() {
+            scratchCanvas = document.getElementById('scratch-canvas');
+            scratchCtx = scratchCanvas.getContext('2d', { willReadFrequently: true });
+            
+            const rect = scratchCanvas.parentElement.getBoundingClientRect();
+            scratchCanvas.width = rect.width;
+            scratchCanvas.height = rect.height;
+            
+            const gradient = scratchCtx.createLinearGradient(0, 0, scratchCanvas.width, scratchCanvas.height);
+            gradient.addColorStop(0, '#d1d5db');
+            gradient.addColorStop(0.5, '#f3f4f6');
+            gradient.addColorStop(1, '#9ca3af');
+            
+            scratchCtx.globalCompositeOperation = 'source-over';
+            scratchCtx.fillStyle = gradient;
+            scratchCtx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+            
+            scratchCtx.font = "bold 22px 'Poppins', sans-serif";
+            scratchCtx.fillStyle = "#6b7280";
+            scratchCtx.textAlign = "center";
+            scratchCtx.textBaseline = "middle";
+            scratchCtx.fillText("CÀO Ở ĐÂY NHÉ", scratchCanvas.width / 2, scratchCanvas.height / 2);
+
+            scratchCtx.globalCompositeOperation = 'destination-out';
+            scratchCtx.lineWidth = 30;
+            scratchCtx.lineCap = 'round';
+            scratchCtx.lineJoin = 'round';
+            
+            isScratchRevealed = false;
+            scratchCanvas.style.transition = 'none';
+            scratchCanvas.style.opacity = '1';
+        }
+
+        function getScratchPos(e) {
+            const rect = scratchCanvas.getBoundingClientRect();
+            let clientX = e.clientX;
+            let clientY = e.clientY;
+            
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            }
+            
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startScratch(e) {
+            if (isScratchRevealed) return;
+            isScratching = true;
+            const pos = getScratchPos(e);
+            scratchCtx.beginPath();
+            scratchCtx.moveTo(pos.x, pos.y);
+            e.preventDefault();
+        }
+
+        function moveScratch(e) {
+            if (!isScratching || isScratchRevealed) return;
+            const pos = getScratchPos(e);
+            scratchCtx.lineTo(pos.x, pos.y);
+            scratchCtx.stroke();
+            checkScratchReveal();
+            e.preventDefault();
+        }
+
+        function endScratch(e) {
+            isScratching = false;
+        }
+
+        function checkScratchReveal() {
+            const imageData = scratchCtx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
+            const pixels = imageData.data;
+            let transparentPixels = 0;
+            
+            for (let i = 3; i < pixels.length; i += 16) {
+                if (pixels[i] < 10) {
+                    transparentPixels++;
+                }
+            }
+            
+            const totalSampled = pixels.length / 16;
+            const percentage = (transparentPixels / totalSampled) * 100;
+            
+            // Yêu cầu cào sạch 80% thì lớp bạc mới bay hết
+            if (percentage > 80 && !isScratchRevealed) {
+                isScratchRevealed = true;
+                scratchCanvas.style.transition = 'opacity 0.8s ease';
+                scratchCanvas.style.opacity = '0';
+                
+                // Bắn pháo hoa ăn mừng khi cào xong
+                fireConfetti();
+            }
+        }
+
+        function openScratchModal() {
+            document.getElementById('scratch-modal').classList.remove('hidden');
+            document.getElementById('scratch-modal').classList.add('fade-in');
+            setTimeout(initScratch, 50); 
+        }
+
+        function closeScratchModal() {
+            document.getElementById('scratch-modal').classList.add('hidden');
+            document.getElementById('scratch-modal').classList.remove('fade-in');
+        }
+
+        function resetScratch() {
+            initScratch();
+        }
+
+        // --- LOGIC BỨC THƯ ---
         let typingTimeouts = [];
 
         function showLetterContent() {
@@ -946,9 +1122,21 @@
         // Khởi tạo bài đầu tiên (nhưng chưa phát)
         window.addEventListener('load', () => {
             loadSong(currentSongIndex);
+            
+            // Gắn sự kiện cho vé cào
+            const sc = document.getElementById('scratch-canvas');
+            if (sc) {
+                sc.addEventListener('mousedown', startScratch);
+                sc.addEventListener('mousemove', moveScratch);
+                window.addEventListener('mouseup', endScratch);
+                
+                sc.addEventListener('touchstart', startScratch, {passive: false});
+                sc.addEventListener('touchmove', moveScratch, {passive: false});
+                window.addEventListener('touchend', endScratch);
+            }
         });
 
-        // --- CANVAS PARTICLES ---
+        // --- CANVAS PARTICLES (Hiệu ứng lá thư) ---
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
